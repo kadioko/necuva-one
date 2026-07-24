@@ -25,3 +25,5 @@ Permissions are named actions rather than UI roles. Roles bundle permissions; a 
 | Read-Only User | Assigned scope | read-only permissions |
 
 Phase 0 seeds only platform and organisation-administration permissions. Financial permissions are reserved until their command handlers exist.
+
+Phase 1 implements `platform.organisations.provision`. The initial platform owner is created once through a service-role RPC, but only after the server action verifies the authenticated email against `NECUVA_BOOTSTRAP_EMAILS`. The allow-list is server-only and is never sent to the browser.

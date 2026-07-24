@@ -27,8 +27,11 @@ Run the quality gates with `npm run check`, and run production validation with `
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable key | Browser-safe |
 | `NEXT_PUBLIC_APP_URL` | Application origin | Browser-safe |
 | `SUPABASE_SERVICE_ROLE_KEY` | Infrastructure-only privileged operations | Server-only; do not add `NEXT_PUBLIC_` |
+| `NECUVA_BOOTSTRAP_EMAILS` | Comma-separated allow-list for the initial platform owner | Server-only |
 
 The app validates required public Supabase values when it creates a Supabase client. Never commit `.env.local` or production credentials.
+
+The first platform owner must first sign up through Supabase Auth. Set that exact email address in `NECUVA_BOOTSTRAP_EMAILS`, sign in, and use the Control Centre bootstrap action once. Thereafter, platform owners provision organisations through the same Control Centre; PostgreSQL checks `platform.organisations.provision` before making any tenant records.
 
 ## Supabase and Vercel
 
