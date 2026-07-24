@@ -1,0 +1,27 @@
+# Permissions Matrix
+
+Permissions are named actions rather than UI roles. Roles bundle permissions; a member can hold several roles and scopes.
+
+| Role | Initial scope | Core permissions |
+| --- | --- | --- |
+| Platform Owner | Platform | platform administration |
+| Platform Administrator | Platform | customer provisioning, subscriptions |
+| Support Officer | None by default | access only through a grant |
+| Organisation Owner | Organisation | tenant administration |
+| Company Administrator | Company | company configuration and users |
+| Finance Manager | Company | future finance approvals |
+| Accountant | Company | future finance preparation |
+| Cashier | Branch | future cash operations |
+| Sales Manager | Company | future sales management |
+| Sales Representative | Own records/Branch | future sales operations |
+| Procurement Manager | Company | future procurement approvals |
+| Procurement Officer | Branch | future procurement preparation |
+| Warehouse Manager | Warehouse | future warehouse administration |
+| Storekeeper | Warehouse | future stock operations |
+| HR Manager | Company | future HR administration |
+| Payroll Officer | Company | future payroll preparation |
+| Project Manager | Company | future project operations |
+| Auditor | Organisation | read and audit access |
+| Read-Only User | Assigned scope | read-only permissions |
+
+Phase 0 seeds only platform and organisation-administration permissions. Financial permissions are reserved until their command handlers exist.
