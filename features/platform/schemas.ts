@@ -28,3 +28,10 @@ export const organisationStructureSchema = z.object({
     context.addIssue({ code: "custom", path: ["branchId"], message: "A branch is required." });
   }
 });
+
+export const organisationMembershipSchema = z.object({
+  organisationId: uuidSchema,
+  userId: uuidSchema,
+  roleCode: z.enum(["organisation.owner", "company.admin", "read.only"]),
+  status: z.enum(["active", "inactive"]),
+});

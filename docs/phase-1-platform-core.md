@@ -8,11 +8,12 @@
 - One-time platform-owner bootstrap restricted by a server-only email allow-list.
 - Atomic organisation provisioning: organisation, company, branch, owner membership, owner role/scope, implementation record, and audit event.
 - Organisation-owner structure management for additional companies, branches, departments, and warehouses, with scoped permission checks and audit events.
+- Existing-user membership activation/deactivation and system-role assignment, with audit events.
 - Control Centre forms, Zod validation, server actions, unit tests, pgTAP database tests, and CI wiring.
 
 ## Remaining in Phase 1
 
-- User invitation, deactivation, membership assignment, and scoped role administration.
+- User invitation and granular company/branch/warehouse scope administration.
 - Permission management UI and custom-role workflow.
 - Audit-log search/export and customer-visible support-access management.
 - Subscription-plan administration and tenant suspension enforcement.
