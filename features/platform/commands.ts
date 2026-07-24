@@ -4,7 +4,7 @@ import { getServerEnvironment } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-import { provisionOrganisationSchema } from "./schemas";
+import { organisationStructureSchema, provisionOrganisationSchema } from "./schemas";
 
 export type PlatformActionState = {
   status: "idle" | "success" | "error";
@@ -68,4 +68,18 @@ export async function provisionOrganisation(
   }
 
   return { status: "success", message: "Organisation provisioned with its first company and branch." };
+}
+
+export async function addOrganisationStructure(
+  _previousState: PlatformActionState,
+  formData: FormData,
+): Promise<PlatformActionState> {
+  void _previousState;
+  const parsed = organisationStructureSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "error", message: "Review the structure details and try again." };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("add_organisation_structure", { input: parsed.data });
+  return error
+    ? { status: "error", message: "The structure record could not be created." }
+    : { status: "success", message: "Structure record created and audited." };
 }
