@@ -1,6 +1,6 @@
 # Necuva One
 
-Necuva One is a security-first, multi-tenant ERP platform for Necuva Group Limited. This repository currently contains Phase 0: architecture documentation, the tenant-security database baseline, local Supabase configuration, authenticated application shells, and quality gates.
+Necuva One is a security-first, multi-tenant ERP platform for Necuva Group Limited. The repository contains the Phase 0 foundation and the first Phase 1 platform-core slice: secure platform-owner bootstrap and atomic customer-organisation provisioning.
 
 ## Requirements
 
@@ -17,7 +17,7 @@ Necuva One is a security-first, multi-tenant ERP platform for Necuva Group Limit
 4. Run `supabase db reset` to apply migrations and deterministic seed data.
 5. Run `npm run dev` and open `http://localhost:3000`.
 
-Run the quality gates with `npm run check`, and run production validation with `npm run build`.
+Run `npm run check`, `npm run test:db`, and `npm run build` before opening a pull request. Database checks require Docker Desktop's Linux engine.
 
 ## Environment variables
 
@@ -41,4 +41,6 @@ For Vercel, import `kadioko/necuva-one`, configure the public Supabase values fo
 
 ## Current scope
 
-No accounting, sales, inventory, purchasing, payroll, manufacturing, posting engine, or operational master data is implemented. See [`docs/module-roadmap.md`](docs/module-roadmap.md) for the staged roadmap and [`docs/security-checklist.md`](docs/security-checklist.md) for the security review list.
+No accounting, sales, inventory, purchasing, payroll, manufacturing, posting engine, or operational master data is implemented. The next Platform Core work is company, branch, department, warehouse, membership, and scoped-role management.
+
+Start with the [documentation index](docs/README.md), then review the [Phase 1 status](docs/phase-1-platform-core.md), [local development guide](docs/local-development.md), [module roadmap](docs/module-roadmap.md), and [security checklist](docs/security-checklist.md).
