@@ -4,6 +4,22 @@
 
 `platform -> organisation -> company -> branch -> department / warehouse`
 
+```mermaid
+erDiagram
+  PROFILES ||--o{ ORGANISATION_MEMBERSHIPS : joins
+  ORGANISATIONS ||--o{ ORGANISATION_MEMBERSHIPS : has
+  ORGANISATIONS ||--o{ COMPANIES : owns
+  COMPANIES ||--o{ BRANCHES : contains
+  BRANCHES ||--o{ DEPARTMENTS : groups
+  BRANCHES ||--o{ WAREHOUSES : operates
+  ORGANISATION_MEMBERSHIPS ||--o{ MEMBERSHIP_ROLES : receives
+  ROLES ||--o{ MEMBERSHIP_ROLES : assigns
+  ROLES ||--o{ ROLE_PERMISSIONS : grants
+  PERMISSIONS ||--o{ ROLE_PERMISSIONS : defines
+  ORGANISATIONS ||--o{ SUPPORT_ACCESS_GRANTS : authorises
+  ORGANISATIONS ||--o{ AUDIT_EVENTS : records
+```
+
 `profiles` is keyed by `auth.users.id`. `organisation_memberships` establishes a user's tenant membership. Role assignments and scope assignments determine the member's effective permissions.
 
 ## Rules
