@@ -31,3 +31,5 @@ Phase 1 implements `platform.organisations.provision`. The initial platform owne
 Organisation owners now receive `organisation.structure.manage`, allowing them to create companies, branches, departments, and warehouses only within their own organisation.
 
 Organisation owners also receive `organisation.memberships.manage`. The current screen manages existing authenticated users; invitation delivery and granular scopes remain a later Phase 1 slice.
+
+Organisation owners receive `organisation.audit.read` and can search the most recent authorised audit events from the ERP audit trail.

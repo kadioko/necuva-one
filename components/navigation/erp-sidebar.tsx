@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { Building2, LayoutDashboard, Settings, ShieldCheck } from "lucide-react";
+import { Building2, ClipboardList, LayoutDashboard, Settings, ShieldCheck } from "lucide-react";
 
 const navigation = [
   { href: "/erp", label: "Overview", icon: LayoutDashboard },
   { href: "/onboarding", label: "Onboarding", icon: Building2 },
+  { href: "/erp/audit", label: "Audit trail", icon: ClipboardList },
   { href: "/admin", label: "Control Centre", icon: ShieldCheck },
   { href: "/erp/settings", label: "Settings", icon: Settings },
 ];
