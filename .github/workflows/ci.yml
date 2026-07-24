@@ -18,7 +18,12 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.109.0
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test
+      - run: supabase start
+      - run: npm run test:db
       - run: npm run build

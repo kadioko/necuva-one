@@ -64,7 +64,8 @@ create table public.branches (
   updated_at timestamptz not null default now(),
   foreign key (company_id, organisation_id) references public.companies(id, organisation_id) on delete restrict,
   unique (organisation_id, code),
-  unique (id, organisation_id)
+  unique (id, organisation_id),
+  unique (id, organisation_id, company_id)
 );
 
 create table public.departments (
@@ -77,7 +78,7 @@ create table public.departments (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   foreign key (company_id, organisation_id) references public.companies(id, organisation_id) on delete restrict,
-  foreign key (branch_id, organisation_id) references public.branches(id, organisation_id) on delete restrict,
+  foreign key (branch_id, organisation_id, company_id) references public.branches(id, organisation_id, company_id) on delete restrict,
   unique (id, organisation_id)
 );
 
@@ -92,7 +93,7 @@ create table public.warehouses (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   foreign key (company_id, organisation_id) references public.companies(id, organisation_id) on delete restrict,
-  foreign key (branch_id, organisation_id) references public.branches(id, organisation_id) on delete restrict,
+  foreign key (branch_id, organisation_id, company_id) references public.branches(id, organisation_id, company_id) on delete restrict,
   unique (organisation_id, code),
   unique (id, organisation_id)
 );
