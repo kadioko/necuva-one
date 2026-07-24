@@ -106,3 +106,12 @@ export async function grantSupportAccess(_previousState: PlatformActionState, fo
   const { error } = await supabase.rpc("grant_support_access", { input: parsed.data });
   return error ? { status: "error", message: "Support access could not be granted." } : { status: "success", message: "Time-limited support access granted and audited." };
 }
+
+export async function revokeSupportAccess(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> {
+  void _previousState;
+  const grantId = formData.get("grantId");
+  if (typeof grantId !== "string") return { status: "error", message: "Support grant is required." };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("revoke_support_access", { grant_id: grantId, revoke_reason: String(formData.get("reason") ?? "") });
+  return error ? { status: "error", message: "Support access could not be revoked." } : { status: "success", message: "Support access revoked and audited." };
+}
