@@ -4,7 +4,7 @@ import { getServerEnvironment } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-import { organisationMembershipSchema, organisationStructureSchema, provisionOrganisationSchema } from "./schemas";
+import { organisationMembershipSchema, organisationStructureSchema, provisionOrganisationSchema, supportAccessSchema } from "./schemas";
 
 export type PlatformActionState = {
   status: "idle" | "success" | "error";
@@ -96,4 +96,13 @@ export async function manageOrganisationMembership(
   return error
     ? { status: "error", message: "Membership could not be updated." }
     : { status: "success", message: "Membership and role assignment updated." };
+}
+
+export async function grantSupportAccess(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> {
+  void _previousState;
+  const parsed = supportAccessSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "error", message: "Review the support access details and try again." };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("grant_support_access", { input: parsed.data });
+  return error ? { status: "error", message: "Support access could not be granted." } : { status: "success", message: "Time-limited support access granted and audited." };
 }

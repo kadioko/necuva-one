@@ -10,13 +10,14 @@
 - Organisation-owner structure management for additional companies, branches, departments, and warehouses, with scoped permission checks and audit events.
 - Existing-user membership activation/deactivation and system-role assignment, with audit events.
 - Permission-gated audit-trail search for organisation owners.
+- Time-limited, reasoned support-access grants for approved platform staff, with audit records and revocation RPC support.
 - Control Centre forms, Zod validation, server actions, unit tests, pgTAP database tests, and CI wiring.
 
 ## Remaining in Phase 1
 
 - User invitation and granular company/branch/warehouse scope administration.
 - Permission management UI and custom-role workflow.
-- Audit-log export and customer-visible support-access management.
+- Audit-log export and support-access grant listing/revocation screen.
 - Subscription-plan administration and tenant suspension enforcement.
 - Onboarding workflow, saved tenant context, dashboard data, and end-to-end browser tests.
 
