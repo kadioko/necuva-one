@@ -37,3 +37,4 @@ export const organisationMembershipSchema = z.object({
 });
 
 export const supportAccessSchema = z.object({ organisationId: uuidSchema, supportUserId: uuidSchema, reason: z.string().trim().min(10).max(1000), expiresAt: z.string().trim().min(1) });
+export const organisationStatusSchema = z.object({ organisationId: uuidSchema, status: z.enum(["trial", "active", "grace_period", "suspended", "closed"]), reason: z.string().trim().min(10).max(1000) });

@@ -4,7 +4,7 @@ import { getServerEnvironment } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-import { organisationMembershipSchema, organisationStructureSchema, provisionOrganisationSchema, supportAccessSchema } from "./schemas";
+import { organisationMembershipSchema, organisationStatusSchema, organisationStructureSchema, provisionOrganisationSchema, supportAccessSchema } from "./schemas";
 
 export type PlatformActionState = {
   status: "idle" | "success" | "error";
@@ -114,4 +114,13 @@ export async function revokeSupportAccess(_previousState: PlatformActionState, f
   const supabase = await createClient();
   const { error } = await supabase.rpc("revoke_support_access", { grant_id: grantId, revoke_reason: String(formData.get("reason") ?? "") });
   return error ? { status: "error", message: "Support access could not be revoked." } : { status: "success", message: "Support access revoked and audited." };
+}
+
+export async function setOrganisationStatus(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> {
+  void _previousState;
+  const parsed = organisationStatusSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "error", message: "Provide an organisation, status, and reason." };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("set_organisation_status", { input: parsed.data });
+  return error ? { status: "error", message: "Tenant status could not be updated." } : { status: "success", message: "Tenant lifecycle status updated and audited." };
 }

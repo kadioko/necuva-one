@@ -1,6 +1,7 @@
 import { connection } from "next/server";
 
 import { PlatformProvisioning } from "@/features/platform/components/platform-provisioning";
+import { TenantLifecycleForm } from "@/features/platform/components/tenant-lifecycle-form";
 import { requireUser } from "@/lib/auth/require-user";
 
 export default async function ControlCentrePage() {
@@ -17,6 +18,7 @@ export default async function ControlCentrePage() {
         </p>
       </div>
       <PlatformProvisioning />
+      <section className="space-y-4 border-t pt-8"><div><h2 className="text-lg font-semibold">Tenant lifecycle</h2><p className="mt-1 text-sm text-muted-foreground">Change a customer organisation status with a reasoned audit event.</p></div><TenantLifecycleForm /></section>
     </main>
   );
 }
