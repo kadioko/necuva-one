@@ -22,8 +22,8 @@ describe("provisionOrganisationSchema", () => {
     ).toBe(false);
   });
 
-  it("requires company administrators to have a company scope", () => {
-    expect(organisationMembershipSchema.safeParse({ organisationId: validInput.ownerUserId, userId: validInput.ownerUserId, roleCode: "company.admin", status: "active", scope: "branch", scopeId: validInput.ownerUserId }).success).toBe(false);
+  it("requires non-organisation scopes to include a scope ID", () => {
+    expect(organisationMembershipSchema.safeParse({ organisationId: validInput.ownerUserId, userId: validInput.ownerUserId, roleCode: "company.admin", status: "active", scope: "company", scopeId: "" }).success).toBe(false);
   });
 
   it("accepts lifecycle reasons and integer subscription prices", () => {
