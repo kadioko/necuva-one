@@ -3,6 +3,7 @@ import { connection } from "next/server";
 import { PlatformProvisioning } from "@/features/platform/components/platform-provisioning";
 import { TenantLifecycleForm } from "@/features/platform/components/tenant-lifecycle-form";
 import { SubscriptionPlanForm } from "@/features/platform/components/subscription-plan-form";
+import { SubscriptionAssignmentForm } from "@/features/platform/components/subscription-assignment-form";
 import { requireUser } from "@/lib/auth/require-user";
 
 export default async function ControlCentrePage() {
@@ -21,6 +22,7 @@ export default async function ControlCentrePage() {
       <PlatformProvisioning />
       <section className="space-y-4 border-t pt-8"><div><h2 className="text-lg font-semibold">Tenant lifecycle</h2><p className="mt-1 text-sm text-muted-foreground">Change a customer organisation status with a reasoned audit event.</p></div><TenantLifecycleForm /></section>
       <section className="space-y-4 border-t pt-8"><div><h2 className="text-lg font-semibold">Subscription plans</h2><p className="mt-1 text-sm text-muted-foreground">Create or update commercial plan pricing in the platform database.</p></div><SubscriptionPlanForm /></section>
+      <section className="space-y-4 border-t pt-8"><div><h2 className="text-lg font-semibold">Tenant subscriptions</h2><p className="mt-1 text-sm text-muted-foreground">Assign an active subscription plan to a customer organisation.</p></div><SubscriptionAssignmentForm /></section>
     </main>
   );
 }
