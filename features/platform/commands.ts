@@ -4,7 +4,7 @@ import { getServerEnvironment } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-import { organisationMembershipSchema, organisationStatusSchema, organisationStructureSchema, provisionOrganisationSchema, subscriptionAssignmentSchema, subscriptionPlanSchema, supportAccessSchema } from "./schemas";
+import { implementationStageSchema, organisationMembershipSchema, organisationStatusSchema, organisationStructureSchema, provisionOrganisationSchema, subscriptionAssignmentSchema, subscriptionPlanSchema, supportAccessSchema } from "./schemas";
 
 export type PlatformActionState = {
   status: "idle" | "success" | "error";
@@ -135,3 +135,4 @@ export async function upsertSubscriptionPlan(_previousState: PlatformActionState
 }
 
 export async function assignSubscriptionPlan(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> { void _previousState; const parsed = subscriptionAssignmentSchema.safeParse(Object.fromEntries(formData)); if (!parsed.success) return { status: "error", message: "Provide an organisation and plan code." }; const supabase = await createClient(); const { error } = await supabase.rpc("assign_subscription_plan", { input: parsed.data }); return error ? { status: "error", message: "Plan could not be assigned." } : { status: "success", message: "Subscription plan assigned and audited." }; }
+export async function setImplementationStage(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> { void _previousState; const parsed = implementationStageSchema.safeParse(Object.fromEntries(formData)); if (!parsed.success) return { status: "error", message: "Provide an organisation and implementation stage." }; const supabase = await createClient(); const { error } = await supabase.rpc("set_implementation_stage", { input: parsed.data }); return error ? { status: "error", message: "Implementation stage could not be updated." } : { status: "success", message: "Implementation stage updated and audited." }; }

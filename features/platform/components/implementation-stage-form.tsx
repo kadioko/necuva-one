@@ -1,0 +1,6 @@
+"use client";
+import { useActionState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { initialPlatformActionState, setImplementationStage } from "../commands";
+export function ImplementationStageForm() { const [state, action, pending] = useActionState(setImplementationStage, initialPlatformActionState); return <form action={action} className="flex max-w-2xl flex-wrap gap-3"><Input className="flex-1" name="organisationId" placeholder="Organisation ID" required/><select className="h-10 rounded-md border bg-background px-3 text-sm" name="stage"><option value="tenant_provisioned">Tenant provisioned</option><option value="data_collection">Data collection</option><option value="configuration">Configuration</option><option value="user_testing">User testing</option><option value="training">Training</option><option value="go_live">Go-live</option><option value="hypercare">Hypercare</option><option value="active_support">Active support</option></select><Button disabled={pending} type="submit">{pending ? "Updating..." : "Update stage"}</Button>{state.message ? <p className="w-full text-sm text-muted-foreground">{state.message}</p> : null}</form>; }
