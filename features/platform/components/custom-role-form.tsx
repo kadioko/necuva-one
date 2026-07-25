@@ -1,0 +1,6 @@
+"use client";
+import { useActionState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { createCustomRole, initialPlatformActionState } from "../commands";
+export function CustomRoleForm() { const [state, action, pending] = useActionState(createCustomRole, initialPlatformActionState); return <form action={action} className="grid gap-3 sm:grid-cols-2"><Input className="sm:col-span-2" name="organisationId" placeholder="Organisation ID" required/><Input name="code" placeholder="Role code" required/><Input name="name" placeholder="Role name" required/><select className="h-10 rounded-md border bg-background px-3 text-sm" name="defaultScope"><option value="organisation">Organisation scope</option><option value="company">Company scope</option><option value="branch">Branch scope</option></select><Input name="permissionCodes" placeholder="Comma-separated supported permissions" required/><div className="sm:col-span-2"><Button disabled={pending} type="submit">{pending ? "Creating..." : "Create custom role"}</Button></div>{state.message ? <p className="text-sm text-muted-foreground sm:col-span-2">{state.message}</p> : null}</form>; }
