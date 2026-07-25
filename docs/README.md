@@ -21,3 +21,5 @@
 - [Testing strategy](testing-strategy.md): unit, component, end-to-end, and database coverage.
 - [Deployment](deployment.md): Vercel/Supabase workflow and production-readiness requirements.
 - [Security checklist](security-checklist.md): implementation and release controls.
+
+The current implementation status is maintained in [Phase 1 platform-core status](phase-1-platform-core.md). Each security-sensitive database change still requires local or CI execution of the Supabase test suite.

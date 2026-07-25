@@ -35,3 +35,7 @@ erDiagram
 The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan modules, subscriptions, and implementation projects.
 
 `platform_role_assignments` is separate from tenant membership because platform staff must not receive tenant membership merely to administer the platform. `provision_organisation(jsonb)` is a security-definer function that checks a platform permission internally and atomically creates the tenant root, first company, first branch, owner membership/scope/role, implementation record, and audit event.
+
+## Current Phase 1 commands
+
+Audited, permission-checked commands now cover tenant lifecycle, subscription plans and assignment, implementation stages, structure creation, membership/scope assignment, custom-role creation, support-access grant/revocation, and audit-trail visibility.

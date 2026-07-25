@@ -33,3 +33,5 @@ Organisation owners now receive `organisation.structure.manage`, allowing them t
 Organisation owners also receive `organisation.memberships.manage`. The current screen manages existing authenticated users; invitation delivery and granular scopes remain a later Phase 1 slice.
 
 Organisation owners receive `organisation.audit.read` and can search the most recent authorised audit events from the ERP audit trail.
+
+Organisation owners also manage support access and custom roles. Custom roles are tenant-owned and limited to the currently supported organisation permissions; custom roles cannot receive platform privileges.

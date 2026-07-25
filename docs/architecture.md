@@ -16,3 +16,7 @@ Domain services depend on ports/interfaces where external infrastructure is expe
 ## Trust boundaries
 
 Public clients use only Supabase publishable credentials. Server-side code may use a service role only within narrowly scoped infrastructure adapters; it is never exposed to the browser. Every mutation validates input, resolves the authenticated actor, authorizes on the server/database boundary, executes atomically where needed, and writes an audit event when required.
+
+## Current command model
+
+Implemented mutations use server actions for Zod validation and Supabase RPC for database-side authorisation and atomic writes. Platform commands use platform permissions; tenant commands use organisation permissions and scopes. The service role is used only for the one-time, allow-listed platform-owner bootstrap.

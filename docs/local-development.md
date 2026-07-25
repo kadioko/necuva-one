@@ -33,3 +33,5 @@ Create the first account through Supabase Auth, set its exact email in `NECUVA_B
 ## Troubleshooting
 
 `supabase start`, `supabase db reset`, and `npm run test:db` require Docker Desktop's Linux daemon. If the CLI cannot connect, start Docker Desktop, wait for the Linux engine to report healthy, then run `docker version` before retrying. Do not hand-edit a database to bypass a failing migration; fix the migration and reset the local database.
+
+The current workstation has no reachable Docker Linux daemon, so only linting, type checking, unit tests, and production builds have been verified locally since the latest migrations.

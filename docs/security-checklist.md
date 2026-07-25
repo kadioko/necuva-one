@@ -3,10 +3,10 @@
 - [x] RLS enabled on every current tenant-owned table; database tests run in CI.
 - [x] Server-side authorization and Zod validation on implemented mutations.
 - [x] Service-role access isolated in a server-only module and excluded from browser code.
-- [ ] Security headers, secure sessions and rate limiting configured.
+- [x] Security headers and secure cookie-backed sessions are configured; endpoint rate limiting remains pending.
 - [ ] Upload type/size checks and signed URLs used for documents.
-- [ ] Secrets validated at startup and excluded from source control.
+- [x] Required public and server-only environment variables are validated where clients are created; secrets are excluded from source control.
 - [x] Audit events are append-only to normal users and written by provisioning RPCs.
-- [ ] Support access is explicit, expiring, revocable and auditable.
+- [x] Support access is explicit, expires within seven days, is revocable, and is audited.
 - [ ] Error messages do not reveal sensitive business data.
 - [ ] Production readiness review completed before customer go-live.

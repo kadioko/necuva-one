@@ -11,3 +11,5 @@ All tenant tables enable and force Row Level Security. A policy permits a row on
 ## Support access
 
 Necuva staff receive no implied tenant visibility. Temporary access requires an active grant containing a reason, start time, expiry time, grantor and grantee. Grants are revocable and audited. Phase 0 stores the model and enforces the absence of default support access.
+
+Phase 1 implements time-limited grants, revocation, participant/administrator visibility, and audit events. Support access is limited to seven days per grant.
