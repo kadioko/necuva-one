@@ -4,7 +4,7 @@ import { getServerEnvironment } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-import { organisationMembershipSchema, organisationStatusSchema, organisationStructureSchema, provisionOrganisationSchema, supportAccessSchema } from "./schemas";
+import { organisationMembershipSchema, organisationStatusSchema, organisationStructureSchema, provisionOrganisationSchema, subscriptionPlanSchema, supportAccessSchema } from "./schemas";
 
 export type PlatformActionState = {
   status: "idle" | "success" | "error";
@@ -123,4 +123,13 @@ export async function setOrganisationStatus(_previousState: PlatformActionState,
   const supabase = await createClient();
   const { error } = await supabase.rpc("set_organisation_status", { input: parsed.data });
   return error ? { status: "error", message: "Tenant status could not be updated." } : { status: "success", message: "Tenant lifecycle status updated and audited." };
+}
+
+export async function upsertSubscriptionPlan(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> {
+  void _previousState;
+  const parsed = subscriptionPlanSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "error", message: "Review the subscription plan details." };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("upsert_subscription_plan", { input: parsed.data });
+  return error ? { status: "error", message: "Subscription plan could not be saved." } : { status: "success", message: "Subscription plan saved and audited." };
 }
