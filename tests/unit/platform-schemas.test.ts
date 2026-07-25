@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { provisionOrganisationSchema } from "@/features/platform/schemas";
+import { organisationMembershipSchema, organisationStatusSchema, provisionOrganisationSchema, subscriptionPlanSchema } from "@/features/platform/schemas";
 
 const validInput = {
   organisationLegalName: "Necuva Customer Limited",
@@ -20,5 +20,14 @@ describe("provisionOrganisationSchema", () => {
     expect(
       provisionOrganisationSchema.safeParse({ ...validInput, branchCode: "head office", ownerUserId: "not-a-uuid" }).success,
     ).toBe(false);
+  });
+
+  it("requires company administrators to have a company scope", () => {
+    expect(organisationMembershipSchema.safeParse({ organisationId: validInput.ownerUserId, userId: validInput.ownerUserId, roleCode: "company.admin", status: "active", scope: "branch", scopeId: validInput.ownerUserId }).success).toBe(false);
+  });
+
+  it("accepts lifecycle reasons and integer subscription prices", () => {
+    expect(organisationStatusSchema.safeParse({ organisationId: validInput.ownerUserId, status: "suspended", reason: "Payment terms are overdue." }).success).toBe(true);
+    expect(subscriptionPlanSchema.safeParse({ code: "growth", name: "Growth", monthlyPriceMinor: "60000000", isActive: "true" }).success).toBe(true);
   });
 });
