@@ -34,7 +34,7 @@ export const organisationMembershipSchema = z.object({
   userId: uuidSchema,
   roleCode: z.string().trim().toLowerCase().regex(/^[a-z0-9_.-]{3,100}$/),
   status: z.enum(["active", "inactive"]),
-  scope: z.enum(["organisation", "company", "branch"]),
+  scope: z.enum(["organisation", "company", "branch", "warehouse"]),
   scopeId: z.preprocess((value) => value === "" ? undefined : value, uuidSchema.optional()),
 }).superRefine((value, context) => {
   if (value.scope !== "organisation" && !value.scopeId) context.addIssue({ code: "custom", path: ["scopeId"], message: "A scope ID is required." });
@@ -45,4 +45,5 @@ export const organisationStatusSchema = z.object({ organisationId: uuidSchema, s
 export const subscriptionPlanSchema = z.object({ code: z.string().trim().toLowerCase().regex(/^[a-z0-9_.-]{3,100}$/), name: z.string().trim().min(1).max(150), monthlyPriceMinor: z.string().regex(/^\d+$/), isActive: z.enum(["true", "false"]) });
 export const subscriptionAssignmentSchema = z.object({ organisationId: uuidSchema, planCode: z.string().trim().toLowerCase().regex(/^[a-z0-9_.-]{3,100}$/) });
 export const implementationStageSchema = z.object({ organisationId: uuidSchema, stage: z.enum(["lead", "qualified", "discovery", "proposal", "contract_signed", "tenant_provisioned", "data_collection", "configuration", "initial_migration", "user_testing", "training", "final_migration", "go_live", "hypercare", "active_support"]) });
-export const customRoleSchema = z.object({ organisationId: uuidSchema, code: z.string().trim().toLowerCase().regex(/^[a-z0-9_.-]{3,100}$/), name: z.string().trim().min(1).max(150), defaultScope: z.enum(["organisation", "company", "branch"]), permissionCodes: z.string().trim().min(1) });
+export const customRoleSchema = z.object({ organisationId: uuidSchema, code: z.string().trim().toLowerCase().regex(/^[a-z0-9_.-]{3,100}$/), name: z.string().trim().min(1).max(150), defaultScope: z.enum(["organisation", "company", "branch", "warehouse"]), permissionCodes: z.string().trim().min(1) });
+export const tenantContextSchema = z.object({ organisationId: uuidSchema, companyId: z.preprocess((value) => value === "" ? undefined : value, uuidSchema.optional()), branchId: z.preprocess((value) => value === "" ? undefined : value, uuidSchema.optional()), warehouseId: z.preprocess((value) => value === "" ? undefined : value, uuidSchema.optional()) });
