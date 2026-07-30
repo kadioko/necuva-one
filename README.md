@@ -41,6 +41,6 @@ For Vercel, import `kadioko/necuva-one`, configure the public Supabase values fo
 
 ## Current scope
 
-No accounting, sales, inventory, purchasing, payroll, manufacturing, posting engine, or operational master data is implemented. Remaining Phase 1 work is end-to-end flows.
+No accounting, sales, inventory, purchasing, payroll, manufacturing, posting engine, or operational master data is implemented. The Phase 1 platform-core completion plan is complete.
 
 Start with the [documentation index](docs/README.md), then review the [Phase 1 status](docs/phase-1-platform-core.md), [local development guide](docs/local-development.md), [module roadmap](docs/module-roadmap.md), and [security checklist](docs/security-checklist.md).

@@ -20,7 +20,7 @@
 
 ## Remaining in Phase 1
 
-- End-to-end browser tests.
+- None. The Phase 1 platform-core completion plan is implemented; database and browser integration checks run in CI with local Supabase.
 
 ## Constraints
 
