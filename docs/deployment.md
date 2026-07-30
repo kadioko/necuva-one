@@ -6,4 +6,4 @@ The CI workflow also starts local Supabase and runs pgTAP database tests. Config
 
 Before commercial production, upgrade Vercel and Supabase plans; enable backups and point-in-time recovery; add monitoring, error tracking, rate limiting, custom domains, disaster recovery exercises, data-processing agreements, penetration/load testing, support procedures, payment integrations and formally approved fiscal integrations.
 
-Current status: the GitHub Actions workflow defines the intended quality gates, but its database stage should be confirmed after the Docker-backed Supabase suite is available.
+Current status: GitHub Actions runs on `main` and pull requests, including the Docker-backed Supabase database suite. Its first successful database run should be confirmed in GitHub after this configuration change.

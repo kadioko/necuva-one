@@ -1,6 +1,6 @@
 # Security Checklist
 
-- [x] RLS enabled on every current tenant-owned table; database tests run in CI.
+- [x] RLS enabled on every current tenant-owned table; database tests are configured in CI and require confirmation of their first successful run.
 - [x] Server-side authorization and Zod validation on implemented mutations.
 - [x] Service-role access isolated in a server-only module and excluded from browser code.
 - [x] Security headers and secure cookie-backed sessions are configured; endpoint rate limiting remains pending.

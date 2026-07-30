@@ -3,7 +3,8 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [master]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -21,9 +22,7 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: 2.109.0
-      - run: npm run lint
-      - run: npm run typecheck
-      - run: npm run test
+      - run: npm run check
       - run: supabase start
       - run: npm run test:db
       - run: npm run build
