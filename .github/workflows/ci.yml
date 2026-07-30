@@ -27,8 +27,9 @@ jobs:
       - run: supabase status -o env >> $GITHUB_ENV
       - run: |
           echo "NEXT_PUBLIC_SUPABASE_URL=$API_URL" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$PUBLISHABLE_KEY" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$ANON_KEY" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_APP_URL=http://127.0.0.1:3000" >> $GITHUB_ENV
+          echo "SUPABASE_SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY" >> $GITHUB_ENV
           echo "NECUVA_BOOTSTRAP_EMAILS=owner@example.com" >> $GITHUB_ENV
       - run: npm run test:db
       - run: npm run build
