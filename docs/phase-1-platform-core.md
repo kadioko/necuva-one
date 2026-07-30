@@ -15,11 +15,12 @@
 - Time-limited, reasoned support-access grants for approved platform staff, with audit records and revocation RPC support.
 - Tenant lifecycle changes, subscription plan administration/assignment, implementation stage changes, granular company/branch/warehouse scopes, custom-role creation/assignment, and saved tenant context.
 - Subscription plans can cap members, companies, branches, and warehouses; caps are enforced during assignment and the corresponding server-side resource mutations.
+- Saved tenant context powers a scope-revalidated organisation dashboard with hierarchy counts, subscription state, and implementation stage.
 - Control Centre forms, Zod validation, server actions, unit tests, pgTAP database tests, and CI wiring.
 
 ## Remaining in Phase 1
 
-- Dashboard data and end-to-end browser tests.
+- End-to-end browser tests.
 
 ## Constraints
 
