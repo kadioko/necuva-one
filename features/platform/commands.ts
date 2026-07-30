@@ -4,7 +4,7 @@ import { getServerEnvironment } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-import { customRoleSchema, implementationStageSchema, organisationMembershipSchema, organisationStatusSchema, organisationStructureSchema, provisionOrganisationSchema, subscriptionAssignmentSchema, subscriptionPlanSchema, supportAccessSchema, tenantContextSchema } from "./schemas";
+import { customRoleSchema, implementationStageSchema, membershipInvitationSchema, organisationMembershipSchema, organisationStatusSchema, organisationStructureSchema, provisionOrganisationSchema, subscriptionAssignmentSchema, subscriptionPlanSchema, supportAccessSchema, tenantContextSchema } from "./schemas";
 
 export type PlatformActionState = {
   status: "idle" | "success" | "error";
@@ -96,6 +96,42 @@ export async function manageOrganisationMembership(
   return error
     ? { status: "error", message: "Membership could not be updated." }
     : { status: "success", message: "Membership and role assignment updated." };
+}
+
+export async function inviteOrganisationMember(
+  _previousState: PlatformActionState,
+  formData: FormData,
+): Promise<PlatformActionState> {
+  void _previousState;
+  const parsed = membershipInvitationSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "error", message: "Review the invitation details and try again." };
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { status: "error", message: "Sign in before inviting a member." };
+
+  const { data: invitationId, error: createError } = await supabase.rpc("create_membership_invitation", { input: parsed.data });
+  if (createError || !invitationId) return { status: "error", message: "The invitation could not be prepared." };
+
+  const admin = createAdminClient();
+  const redirectTo = new URL("/auth/confirm", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000").toString();
+  const { data: invitation, error: authError } = await admin.auth.admin.inviteUserByEmail(parsed.data.email, { redirectTo });
+  if (authError || !invitation.user) {
+    await supabase.rpc("cancel_membership_invitation", { target_invitation_id: invitationId, cancellation_reason: "Auth invitation delivery failed" });
+    return { status: "error", message: "The invitation could not be sent." };
+  }
+
+  const { error: finaliseError } = await supabase.rpc("finalise_membership_invitation", {
+    target_invitation_id: invitationId,
+    target_invited_user_id: invitation.user.id,
+  });
+  if (finaliseError) {
+    await admin.auth.admin.deleteUser(invitation.user.id, true);
+    await supabase.rpc("cancel_membership_invitation", { target_invitation_id: invitationId, cancellation_reason: "Membership finalisation failed" });
+    return { status: "error", message: "The invitation could not be completed." };
+  }
+
+  return { status: "success", message: "Invitation sent with the selected role and scope." };
 }
 
 export async function grantSupportAccess(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> {

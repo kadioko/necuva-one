@@ -2,10 +2,10 @@ import "server-only";
 
 import { createClient } from "@supabase/supabase-js";
 
-import { getServerEnvironment } from "@/lib/env";
+import { getServiceRoleEnvironment } from "@/lib/env";
 
 export function createAdminClient() {
-  const environment = getServerEnvironment();
+  const environment = getServiceRoleEnvironment();
 
   return createClient(
     environment.NEXT_PUBLIC_SUPABASE_URL,

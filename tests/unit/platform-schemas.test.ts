@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { organisationMembershipSchema, organisationStatusSchema, provisionOrganisationSchema, subscriptionPlanSchema } from "@/features/platform/schemas";
+import { membershipInvitationSchema, organisationMembershipSchema, organisationStatusSchema, provisionOrganisationSchema, subscriptionPlanSchema } from "@/features/platform/schemas";
 
 const validInput = {
   organisationLegalName: "Necuva Customer Limited",
@@ -24,6 +24,12 @@ describe("provisionOrganisationSchema", () => {
 
   it("requires non-organisation scopes to include a scope ID", () => {
     expect(organisationMembershipSchema.safeParse({ organisationId: validInput.ownerUserId, userId: validInput.ownerUserId, roleCode: "company.admin", status: "active", scope: "company", scopeId: "" }).success).toBe(false);
+  });
+
+  it("normalises invitation email addresses and enforces the selected scope", () => {
+    const invitation = membershipInvitationSchema.parse({ organisationId: validInput.ownerUserId, email: "ADMIN@NECUVA.TEST", roleCode: "company.admin", scope: "company", scopeId: validInput.ownerUserId });
+    expect(invitation.email).toBe("admin@necuva.test");
+    expect(membershipInvitationSchema.safeParse({ ...invitation, scope: "warehouse", scopeId: "" }).success).toBe(false);
   });
 
   it("accepts lifecycle reasons and integer subscription prices", () => {

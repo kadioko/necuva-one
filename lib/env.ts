@@ -13,6 +13,10 @@ const serverEnvironmentSchema = publicEnvironmentSchema.extend({
     .refine((emails) => emails.length > 0, "At least one bootstrap email is required."),
 });
 
+const serviceRoleEnvironmentSchema = publicEnvironmentSchema.extend({
+  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+});
+
 export function getPublicEnvironment() {
   return publicEnvironmentSchema.parse({
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -26,5 +30,13 @@ export function getServerEnvironment() {
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
     NECUVA_BOOTSTRAP_EMAILS: process.env.NECUVA_BOOTSTRAP_EMAILS,
+  });
+}
+
+export function getServiceRoleEnvironment() {
+  return serviceRoleEnvironmentSchema.parse({
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   });
 }
