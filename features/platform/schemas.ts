@@ -52,7 +52,8 @@ export const membershipInvitationSchema = z.object({
 
 export const supportAccessSchema = z.object({ organisationId: uuidSchema, supportUserId: uuidSchema, reason: z.string().trim().min(10).max(1000), expiresAt: z.string().trim().min(1) });
 export const organisationStatusSchema = z.object({ organisationId: uuidSchema, status: z.enum(["trial", "active", "grace_period", "suspended", "closed"]), reason: z.string().trim().min(10).max(1000) });
-export const subscriptionPlanSchema = z.object({ code: z.string().trim().toLowerCase().regex(/^[a-z0-9_.-]{3,100}$/), name: z.string().trim().min(1).max(150), monthlyPriceMinor: z.string().regex(/^\d+$/), isActive: z.enum(["true", "false"]) });
+const subscriptionLimitSchema = z.string().regex(/^\d*$/);
+export const subscriptionPlanSchema = z.object({ code: z.string().trim().toLowerCase().regex(/^[a-z0-9_.-]{3,100}$/), name: z.string().trim().min(1).max(150), monthlyPriceMinor: z.string().regex(/^\d+$/), isActive: z.enum(["true", "false"]), maxMembers: subscriptionLimitSchema, maxCompanies: subscriptionLimitSchema, maxBranches: subscriptionLimitSchema, maxWarehouses: subscriptionLimitSchema });
 export const subscriptionAssignmentSchema = z.object({ organisationId: uuidSchema, planCode: z.string().trim().toLowerCase().regex(/^[a-z0-9_.-]{3,100}$/) });
 export const implementationStageSchema = z.object({ organisationId: uuidSchema, stage: z.enum(["lead", "qualified", "discovery", "proposal", "contract_signed", "tenant_provisioned", "data_collection", "configuration", "initial_migration", "user_testing", "training", "final_migration", "go_live", "hypercare", "active_support"]) });
 export const customRoleSchema = z.object({ organisationId: uuidSchema, code: z.string().trim().toLowerCase().regex(/^[a-z0-9_.-]{3,100}$/), name: z.string().trim().min(1).max(150), defaultScope: z.enum(["organisation", "company", "branch", "warehouse"]), permissionCodes: z.string().trim().min(1) });

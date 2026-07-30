@@ -34,6 +34,6 @@ describe("provisionOrganisationSchema", () => {
 
   it("accepts lifecycle reasons and integer subscription prices", () => {
     expect(organisationStatusSchema.safeParse({ organisationId: validInput.ownerUserId, status: "suspended", reason: "Payment terms are overdue." }).success).toBe(true);
-    expect(subscriptionPlanSchema.safeParse({ code: "growth", name: "Growth", monthlyPriceMinor: "60000000", isActive: "true" }).success).toBe(true);
+    expect(subscriptionPlanSchema.safeParse({ code: "growth", name: "Growth", monthlyPriceMinor: "60000000", isActive: "true", maxMembers: "25", maxCompanies: "", maxBranches: "5", maxWarehouses: "10" }).success).toBe(true);
   });
 });

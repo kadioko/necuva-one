@@ -14,11 +14,12 @@
 - CSV audit export with the same RLS permission check as the audit trail, optional action/date filters, a 5,000-event bound, and spreadsheet-formula neutralisation.
 - Time-limited, reasoned support-access grants for approved platform staff, with audit records and revocation RPC support.
 - Tenant lifecycle changes, subscription plan administration/assignment, implementation stage changes, granular company/branch/warehouse scopes, custom-role creation/assignment, and saved tenant context.
+- Subscription plans can cap members, companies, branches, and warehouses; caps are enforced during assignment and the corresponding server-side resource mutations.
 - Control Centre forms, Zod validation, server actions, unit tests, pgTAP database tests, and CI wiring.
 
 ## Remaining in Phase 1
 
-- Subscription limits, dashboard data, and end-to-end browser tests.
+- Dashboard data and end-to-end browser tests.
 
 ## Constraints
 
