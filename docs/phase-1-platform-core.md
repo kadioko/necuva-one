@@ -11,13 +11,14 @@
 - Email-based user invitations with server-side role and company, branch, warehouse, or organisation scope validation. Auth delivery failures and membership-finalisation failures are compensated and audited.
 - Existing-user membership activation/deactivation and role assignment, with audit events.
 - Permission-gated audit-trail search for organisation owners.
+- CSV audit export with the same RLS permission check as the audit trail, optional action/date filters, a 5,000-event bound, and spreadsheet-formula neutralisation.
 - Time-limited, reasoned support-access grants for approved platform staff, with audit records and revocation RPC support.
 - Tenant lifecycle changes, subscription plan administration/assignment, implementation stage changes, granular company/branch/warehouse scopes, custom-role creation/assignment, and saved tenant context.
 - Control Centre forms, Zod validation, server actions, unit tests, pgTAP database tests, and CI wiring.
 
 ## Remaining in Phase 1
 
-- Audit-log export, subscription limits, dashboard data, and end-to-end browser tests.
+- Subscription limits, dashboard data, and end-to-end browser tests.
 
 ## Constraints
 
