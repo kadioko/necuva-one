@@ -6,6 +6,6 @@ Required Phase 0 coverage includes tenant A isolation from tenant B, branch-scop
 
 Phase 1 adds database tests that prove an authorised platform owner can provision a tenant, provisioning creates the owner membership, and an unauthorised user is rejected. These run through `npm run test:db` after `supabase start`.
 
-Current automated coverage includes schema validation for provisioning, scoped memberships, invitations, lifecycle updates, plan inputs, currencies, exchange rates, and tax configurations. pgTAP verifies the localisation creation and approval permission boundary. Database tests remain required for every new security-definer RPC; local execution is blocked until Docker Desktop's Linux daemon is available.
+Current automated coverage includes schema validation for provisioning, scoped memberships, invitations, lifecycle updates, plan inputs, currencies, exchange rates, tax configurations, and business parties. pgTAP verifies the localisation and business-party permission boundaries. Database tests remain required for every new security-definer RPC; local execution is blocked until Docker Desktop's Linux daemon is available.
 
 Playwright covers anonymous protected-route redirects, sign-up validation, and authenticated protected-page access. CI starts Supabase, exports its local browser credentials, and runs the browser suite after database tests.

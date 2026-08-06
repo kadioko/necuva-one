@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 
 import type { PlatformActionState } from "@/features/platform/commands";
-import { configurationApprovalSchema, currencySchema, exchangeRateSchema, taxConfigurationSchema } from "./schemas";
+import { businessPartyAddressSchema, businessPartyCategorySchema, businessPartyContactSchema, businessPartySchema, configurationApprovalSchema, currencySchema, exchangeRateSchema, taxConfigurationSchema } from "./schemas";
 
 export const initialMasterDataActionState: PlatformActionState = { status: "idle" };
 
@@ -50,4 +50,40 @@ export async function approveTaxConfigurationVersion(_previousState: PlatformAct
   const supabase = await createClient();
   const { error } = await supabase.rpc("approve_tax_configuration_version", { target_id: parsed.data.id });
   return error ? { status: "error", message: "Tax configuration version could not be approved." } : { status: "success", message: "Tax configuration version approved and audited." };
+}
+
+export async function createBusinessPartyCategory(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> {
+  void _previousState;
+  const parsed = businessPartyCategorySchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "error", message: "Review the category details and try again." };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("create_business_party_category", { input: parsed.data });
+  return error ? { status: "error", message: "Party category could not be created." } : { status: "success", message: "Party category created and audited." };
+}
+
+export async function upsertBusinessParty(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> {
+  void _previousState;
+  const parsed = businessPartySchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "error", message: "Review the party details and try again." };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("upsert_business_party", { input: parsed.data });
+  return error ? { status: "error", message: "Business party could not be saved." } : { status: "success", message: "Business party saved and audited." };
+}
+
+export async function addBusinessPartyContact(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> {
+  void _previousState;
+  const parsed = businessPartyContactSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "error", message: "Review the contact details and try again." };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("add_business_party_contact", { input: parsed.data });
+  return error ? { status: "error", message: "Party contact could not be added." } : { status: "success", message: "Party contact added and audited." };
+}
+
+export async function addBusinessPartyAddress(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> {
+  void _previousState;
+  const parsed = businessPartyAddressSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "error", message: "Review the address details and try again." };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("add_business_party_address", { input: parsed.data });
+  return error ? { status: "error", message: "Party address could not be added." } : { status: "success", message: "Party address added and audited." };
 }

@@ -5,7 +5,8 @@ const navigation = [
   { href: "/erp", label: "Overview", icon: LayoutDashboard },
   { href: "/onboarding", label: "Onboarding", icon: Building2 },
   { href: "/erp/audit", label: "Audit trail", icon: ClipboardList },
-  { href: "/erp/master-data/localisation", label: "Master data", icon: Database },
+  { href: "/erp/master-data/parties", label: "Parties", icon: Database },
+  { href: "/erp/master-data/localisation", label: "Localisation", icon: Database },
   { href: "/admin", label: "Control Centre", icon: ShieldCheck },
   { href: "/erp/settings", label: "Settings", icon: Settings },
 ];
