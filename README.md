@@ -1,6 +1,6 @@
 # Necuva One
 
-Necuva One is a security-first, multi-tenant ERP platform for Necuva Group Limited. The repository contains Phase 0 and a substantial Phase 1 Platform Core: provisioning, tenant lifecycle, structure, invitations, scoped memberships, custom roles, audit export, support access, enforced subscription limits, and tenant dashboards.
+Necuva One is a security-first, multi-tenant ERP platform for Necuva Group Limited. The repository contains Phase 0, a completed Phase 1 Platform Core, and the opening Phase 2 localisation master-data slice: currencies, exchange-rate versions, and tax-configuration versions.
 
 ## Requirements
 

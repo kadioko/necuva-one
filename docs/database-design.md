@@ -32,10 +32,14 @@ erDiagram
 
 ## Platform provisioning tables
 
-The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, and implementation projects.
+The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, implementation projects, shared currencies, organisation exchange-rate versions, and tax-configuration versions.
 
 `platform_role_assignments` is separate from tenant membership because platform staff must not receive tenant membership merely to administer the platform. `provision_organisation(jsonb)` is a security-definer function that checks a platform permission internally and atomically creates the tenant root, first company, first branch, owner membership/scope/role, implementation record, and audit event.
 
 ## Current Phase 1 commands
 
 Audited, permission-checked commands now cover tenant lifecycle, subscription plans and assignment, implementation stages, structure creation, membership/scope assignment, custom-role creation, support-access grant/revocation, and audit-trail visibility. Assigned plan limits are checked inside resource-creation and membership commands rather than only in the user interface.
+
+## Phase 2 Localisation Foundation
+
+`currencies` is platform-managed reference data. `organisation_exchange_rate_versions` and `tax_configuration_versions` are tenant-owned, RLS-protected append-only configuration versions. Both carry effective dates, source references, draft/approved/retired state, actor references, and audit events. Approval retires an approved record for the same effective key before it promotes the selected draft, preserving historical versions without hard-coding statutory rates.
