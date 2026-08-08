@@ -8,6 +8,7 @@
 - [x] Required public and server-only environment variables are validated where clients are created; secrets are excluded from source control.
 - [x] Audit events are append-only to normal users and written by provisioning RPCs.
 - [x] Payment account identifiers require scope-aware permission checks and are masked in interfaces and audit payloads.
+- [x] Master-data CSV imports enforce file/row limits, strict templates, duplicate checks, domain permissions, and atomic confirmation.
 - [x] Support access is explicit, expires within seven days, is revocable, and is audited.
 - [ ] Error messages do not reveal sensitive business data.
 - [ ] Production readiness review completed before customer go-live.

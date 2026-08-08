@@ -10,7 +10,7 @@ Build the reusable, tenant-safe reference data on which accounting, purchasing, 
 2. Business parties: customer and supplier records, contacts, categories, and addresses. Implemented.
 3. Item catalogue: products, services, categories, units of measure, conversions, and barcodes. Implemented.
 4. Payment reference data: payment methods, bank accounts, and mobile-money accounts. Implemented.
-5. Controlled imports: templates, validation previews, duplicate detection, confirmation, and audit records.
+5. Controlled imports: templates, validation previews, duplicate detection, confirmation, and audit records. Implemented for business parties and catalogue items.
 
 ## Localisation Rules
 
@@ -40,6 +40,18 @@ Build the reusable, tenant-safe reference data on which accounting, purchasing, 
 - Account identifiers are masked in the interface and audit payloads. Only authorised administrators can select the underlying reference records.
 - One active default bank account and one active default mobile-money account may exist per company and currency. Providers and currencies are configurable rather than hard-coded for Tanzania.
 - These records hold no balances, ledger mappings, payment transactions, reconciliation state, or provider credentials. Those belong to accounting and integration phases.
+
+## Controlled Import Rules
+
+- Versioned CSV templates define exact columns for business-party and catalogue-item imports. Files are parsed server-side with strict column counts and a 1 MB, 500-row synchronous limit.
+- Every file is identified by a SHA-256 checksum and can be staged only once for an organisation and import type.
+- Staging writes immutable raw rows, normalized previews, create/update operations, and row-level validation errors. Existing external or item codes are shown as updates; repeated codes within one file are invalid.
+- Catalogue imports resolve active base-unit and optional category codes during staging. Party imports require external codes so updates remain deterministic.
+- Confirmation requires both import permission and the target domain permission, is blocked while any row is invalid, and applies the complete batch in one database transaction through the existing audited domain commands.
+
+## Status
+
+Phase 2 is complete. Additional import targets can extend the same staging contract when their owning modules are implemented.
 
 ## Deferred
 

@@ -32,7 +32,7 @@ erDiagram
 
 ## Platform provisioning tables
 
-The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, implementation projects, shared currencies, organisation exchange-rate versions, tax-configuration versions, business-party categories, business parties, party contacts, party addresses, item categories, units of measure, unit conversions, catalogue items, item barcodes, payment methods, bank accounts, and mobile-money accounts.
+The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, implementation projects, shared currencies, organisation exchange-rate versions, tax-configuration versions, business-party categories, business parties, party contacts, party addresses, item categories, units of measure, unit conversions, catalogue items, item barcodes, payment methods, bank accounts, mobile-money accounts, master-data import batches, and staged import rows.
 
 `platform_role_assignments` is separate from tenant membership because platform staff must not receive tenant membership merely to administer the platform. `provision_organisation(jsonb)` is a security-definer function that checks a platform permission internally and atomically creates the tenant root, first company, first branch, owner membership/scope/role, implementation record, and audit event.
 
@@ -53,3 +53,7 @@ Audited, permission-checked commands now cover tenant lifecycle, subscription pl
 ## Phase 2 Payment References
 
 `payment_methods`, `bank_accounts`, and `mobile_money_accounts` are company-owned configuration records with an explicit tenant key. Their composite company foreign keys prevent cross-tenant ownership, while `private.has_company_permission` applies organisation and nested company scope to both RLS reads and RPC mutations. Partial unique indexes permit only one active default settlement account of each account type per company and currency. Account identifiers are deliberately excluded from audit payloads except for their final four characters.
+
+## Phase 2 Controlled Imports
+
+`master_data_imports` records the tenant, target type, source checksum, row counts, lifecycle, and actors. `master_data_import_rows` retains each raw row, normalized data, proposed create/update operation, and validation errors. Staging and confirmation are security-definer commands; confirmation locks the batch, rejects invalid or already-confirmed work, and invokes existing domain commands atomically. Direct table writes are not granted to authenticated users.
