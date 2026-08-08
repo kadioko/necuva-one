@@ -24,7 +24,7 @@ Permissions are named actions rather than UI roles. Roles bundle permissions; a 
 | Auditor | Organisation | read and audit access |
 | Read-Only User | Assigned scope | read-only permissions |
 
-Phase 0 seeds only platform and organisation-administration permissions. Financial permissions are reserved until their command handlers exist.
+Phase 0 seeds only platform and organisation-administration permissions. Phase 3 introduces `organisation.accounting.configure` for company chart and fiscal-calendar setup. Journal preparation, approval, posting, period control, and reporting permissions remain reserved until their command handlers exist.
 
 Phase 1 implements `platform.organisations.provision`. The initial platform owner is created once through a service-role RPC, but only after the server action verifies the authenticated email against `NECUVA_BOOTSTRAP_EMAILS`. The allow-list is server-only and is never sent to the browser.
 
@@ -35,3 +35,5 @@ Organisation owners also receive `organisation.memberships.manage`. The current 
 Organisation owners receive `organisation.audit.read` and can search the most recent authorised audit events from the ERP audit trail.
 
 Organisation owners also manage support access, custom roles, Phase 2 localisation configuration, business-party master data, the item catalogue, payment references, and controlled imports. Tenant localisation separates draft creation (`organisation.localisation.manage`) from approval (`organisation.localisation.approve`); both are initially granted to organisation owners. Party categories, parties, contacts, and addresses require `organisation.parties.manage`; catalogue categories, units, conversions, items, and barcodes require `organisation.catalog.manage`; company payment methods and settlement accounts require the scope-aware `organisation.payment_references.manage`. Import staging and confirmation require `organisation.imports.manage` plus the permission for the target domain, preventing import access from bypassing ordinary mutation rules. Platform owners maintain shared currency data through `platform.localisation.manage`. Custom roles are tenant-owned and limited to currently supported organisation permissions; custom roles cannot receive platform privileges.
+
+Accounting groups, chart accounts, and draft fiscal calendars require the company-scoped `organisation.accounting.configure` permission. It is initially granted to organisation owners and may be assigned to tenant custom roles with company scope.

@@ -15,6 +15,7 @@
 - [Client onboarding](client-onboarding.md): implementation lifecycle.
 - [Phase 1 platform-core status](phase-1-platform-core.md): completed work and remaining work.
 - [Phase 2 master-data status](phase-2-master-data.md): delivery order, implemented reference data, and deferred transaction logic.
+- [Phase 3 accounting status](phase-3-accounting.md): accounting delivery order, configuration invariants, and deferred posting logic.
 
 ## Operations and quality
 
@@ -23,4 +24,4 @@
 - [Deployment](deployment.md): Vercel/Supabase workflow and production-readiness requirements.
 - [Security checklist](security-checklist.md): implementation and release controls.
 
-Current implementation status is maintained in the [Phase 1 platform-core status](phase-1-platform-core.md) and [Phase 2 master-data status](phase-2-master-data.md). Each security-sensitive database change still requires local or CI execution of the Supabase test suite.
+Current implementation status is maintained in the [Phase 1 platform-core status](phase-1-platform-core.md), [Phase 2 master-data status](phase-2-master-data.md), and [Phase 3 accounting status](phase-3-accounting.md). Each security-sensitive database change still requires local or CI execution of the Supabase test suite.

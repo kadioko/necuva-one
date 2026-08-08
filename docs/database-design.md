@@ -32,7 +32,7 @@ erDiagram
 
 ## Platform provisioning tables
 
-The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, implementation projects, shared currencies, organisation exchange-rate versions, tax-configuration versions, business-party categories, business parties, party contacts, party addresses, item categories, units of measure, unit conversions, catalogue items, item barcodes, payment methods, bank accounts, mobile-money accounts, master-data import batches, and staged import rows.
+The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, implementation projects, shared currencies, organisation exchange-rate versions, tax-configuration versions, business-party categories, business parties, party contacts, party addresses, item categories, units of measure, unit conversions, catalogue items, item barcodes, payment methods, bank accounts, mobile-money accounts, master-data import batches, staged import rows, account groups, chart accounts, fiscal years, and fiscal periods.
 
 `platform_role_assignments` is separate from tenant membership because platform staff must not receive tenant membership merely to administer the platform. `provision_organisation(jsonb)` is a security-definer function that checks a platform permission internally and atomically creates the tenant root, first company, first branch, owner membership/scope/role, implementation record, and audit event.
 
@@ -57,3 +57,7 @@ Audited, permission-checked commands now cover tenant lifecycle, subscription pl
 ## Phase 2 Controlled Imports
 
 `master_data_imports` records the tenant, target type, source checksum, row counts, lifecycle, and actors. `master_data_import_rows` retains each raw row, normalized data, proposed create/update operation, and validation errors. Staging and confirmation are security-definer commands; confirmation locks the batch, rejects invalid or already-confirmed work, and invokes existing domain commands atomically. Direct table writes are not granted to authenticated users.
+
+## Phase 3 Accounting Configuration
+
+`account_groups` and `chart_accounts` are legal-company records protected by company-scope RLS and composite tenant foreign keys. Group/account type consistency is enforced by a composite foreign key, and chart-account normal balance is a generated value rather than editable state. `fiscal_years` and `fiscal_periods` use date-guard triggers to prevent overlap; the creation command atomically creates a draft year and twelve future monthly periods.
