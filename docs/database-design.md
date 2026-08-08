@@ -32,7 +32,7 @@ erDiagram
 
 ## Platform provisioning tables
 
-The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, implementation projects, shared currencies, organisation exchange-rate versions, tax-configuration versions, business-party categories, business parties, party contacts, party addresses, item categories, units of measure, unit conversions, catalogue items, and item barcodes.
+The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, implementation projects, shared currencies, organisation exchange-rate versions, tax-configuration versions, business-party categories, business parties, party contacts, party addresses, item categories, units of measure, unit conversions, catalogue items, item barcodes, payment methods, bank accounts, and mobile-money accounts.
 
 `platform_role_assignments` is separate from tenant membership because platform staff must not receive tenant membership merely to administer the platform. `provision_organisation(jsonb)` is a security-definer function that checks a platform permission internally and atomically creates the tenant root, first company, first branch, owner membership/scope/role, implementation record, and audit event.
 
@@ -49,3 +49,7 @@ Audited, permission-checked commands now cover tenant lifecycle, subscription pl
 ## Phase 2 Item Catalogue
 
 `catalog_items` separates product and service identity from future inventory balances. Each item has a tenant-scoped code, category, and base unit; products may opt into future inventory tracking, while services cannot. Categories, units, conversions, and barcodes all carry `organisation_id`; composite foreign keys prevent cross-tenant links, compatible unit dimensions are checked in the command, and a partial unique index ensures at most one primary barcode per item.
+
+## Phase 2 Payment References
+
+`payment_methods`, `bank_accounts`, and `mobile_money_accounts` are company-owned configuration records with an explicit tenant key. Their composite company foreign keys prevent cross-tenant ownership, while `private.has_company_permission` applies organisation and nested company scope to both RLS reads and RPC mutations. Partial unique indexes permit only one active default settlement account of each account type per company and currency. Account identifiers are deliberately excluded from audit payloads except for their final four characters.

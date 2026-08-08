@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Barcode, Building2, ClipboardList, Database, LayoutDashboard, Settings, ShieldCheck } from "lucide-react";
+import { Barcode, Building2, ClipboardList, Database, Landmark, LayoutDashboard, Settings, ShieldCheck } from "lucide-react";
 
 const navigation = [
   { href: "/erp", label: "Overview", icon: LayoutDashboard },
@@ -7,6 +7,7 @@ const navigation = [
   { href: "/erp/audit", label: "Audit trail", icon: ClipboardList },
   { href: "/erp/master-data/parties", label: "Parties", icon: Database },
   { href: "/erp/master-data/catalogue", label: "Item catalogue", icon: Barcode },
+  { href: "/erp/master-data/payments", label: "Payment references", icon: Landmark },
   { href: "/erp/master-data/localisation", label: "Localisation", icon: Database },
   { href: "/admin", label: "Control Centre", icon: ShieldCheck },
   { href: "/erp/settings", label: "Settings", icon: Settings },

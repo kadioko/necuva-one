@@ -87,3 +87,35 @@ export const unitOfMeasureSchema = z.object({ organisationId: uuidSchema, code: 
 export const unitConversionSchema = z.object({ organisationId: uuidSchema, fromUnitId: uuidSchema, toUnitId: uuidSchema, factor: positiveDecimalSchema }).refine((value) => value.fromUnitId !== value.toUnitId, { path: ["toUnitId"], message: "Units must differ." });
 export const catalogItemSchema = z.object({ id: z.preprocess((value) => value === "" ? undefined : value, uuidSchema.optional()), organisationId: uuidSchema, categoryId: z.preprocess((value) => value === "" ? undefined : value, uuidSchema.optional()), baseUnitId: uuidSchema, itemType: z.enum(["product", "service"]), code: itemCodeSchema, name: z.string().trim().min(1).max(200), description: z.preprocess((value) => value === "" ? undefined : value, z.string().trim().max(2000).optional()), tracksInventory: z.enum(["true", "false"]), isActive: z.enum(["true", "false"]) }).refine((value) => value.itemType === "product" || value.tracksInventory === "false", { path: ["tracksInventory"], message: "Services cannot track inventory." });
 export const catalogItemBarcodeSchema = z.object({ organisationId: uuidSchema, itemId: uuidSchema, barcode: z.string().trim().min(3).max(100), symbology: z.enum(["ean_13", "ean_8", "upc_a", "code_128", "qr_code", "other"]), isPrimary: z.enum(["true", "false"]) });
+
+const paymentReferenceBaseSchema = z.object({
+  id: z.preprocess((value) => value === "" ? undefined : value, uuidSchema.optional()),
+  organisationId: uuidSchema,
+  companyId: uuidSchema,
+  code: itemCodeSchema,
+  name: z.string().trim().min(1).max(100),
+  isActive: z.enum(["true", "false"]),
+});
+
+export const paymentMethodSchema = paymentReferenceBaseSchema.extend({
+  kind: z.enum(["cash", "bank_transfer", "mobile_money", "card", "cheque", "other"]),
+  instructions: z.preprocess((value) => value === "" ? undefined : value, z.string().trim().max(1000).optional()),
+});
+
+export const bankAccountSchema = paymentReferenceBaseSchema.extend({
+  bankName: z.string().trim().min(2).max(150),
+  accountName: z.string().trim().min(2).max(200),
+  accountNumber: z.string().trim().min(4).max(64),
+  branchName: z.preprocess((value) => value === "" ? undefined : value, z.string().trim().max(150).optional()),
+  swiftCode: z.preprocess((value) => value === "" ? undefined : value, z.string().trim().toUpperCase().regex(/^[A-Z0-9]{8}([A-Z0-9]{3})?$/).optional()),
+  currencyCode: z.string().trim().toUpperCase().regex(/^[A-Z]{3}$/),
+  isDefault: z.enum(["true", "false"]),
+}).refine((value) => value.isDefault === "false" || value.isActive === "true", { path: ["isActive"], message: "A default account must be active." });
+
+export const mobileMoneyAccountSchema = paymentReferenceBaseSchema.extend({
+  providerName: z.string().trim().min(2).max(100),
+  accountName: z.string().trim().min(2).max(200),
+  phoneNumber: z.string().trim().regex(/^\+?[0-9]{7,20}$/),
+  currencyCode: z.string().trim().toUpperCase().regex(/^[A-Z]{3}$/),
+  isDefault: z.enum(["true", "false"]),
+}).refine((value) => value.isDefault === "false" || value.isActive === "true", { path: ["isActive"], message: "A default account must be active." });

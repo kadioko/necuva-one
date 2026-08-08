@@ -9,7 +9,7 @@ Build the reusable, tenant-safe reference data on which accounting, purchasing, 
 1. Localisation configuration: currencies, organisation exchange rates, and effective-dated tax versions.
 2. Business parties: customer and supplier records, contacts, categories, and addresses. Implemented.
 3. Item catalogue: products, services, categories, units of measure, conversions, and barcodes. Implemented.
-4. Payment reference data: payment methods, bank accounts, and mobile-money accounts.
+4. Payment reference data: payment methods, bank accounts, and mobile-money accounts. Implemented.
 5. Controlled imports: templates, validation previews, duplicate detection, confirmation, and audit records.
 
 ## Localisation Rules
@@ -32,6 +32,14 @@ Build the reusable, tenant-safe reference data on which accounting, purchasing, 
 - Units and categories are tenant-owned reference data. Unit conversions use positive PostgreSQL `numeric` factors and only connect compatible unit dimensions.
 - Barcodes are separate tenant-unique records, allowing multiple scannable codes per item without overloading the item identifier.
 - The catalogue has no editable quantity, stock cost, or valuation field. Future inventory movements will be the exclusive source of stock balances.
+
+## Payment Reference Rules
+
+- Payment methods, bank accounts, and mobile-money accounts belong to a legal company as well as its organisation; composite foreign keys prevent cross-tenant or cross-company references.
+- Settlement-account reads and mutations require `organisation.payment_references.manage` within the member's assigned organisation, company, branch, or warehouse scope.
+- Account identifiers are masked in the interface and audit payloads. Only authorised administrators can select the underlying reference records.
+- One active default bank account and one active default mobile-money account may exist per company and currency. Providers and currencies are configurable rather than hard-coded for Tanzania.
+- These records hold no balances, ledger mappings, payment transactions, reconciliation state, or provider credentials. Those belong to accounting and integration phases.
 
 ## Deferred
 
