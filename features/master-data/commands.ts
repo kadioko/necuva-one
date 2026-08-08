@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 
 import type { PlatformActionState } from "@/features/platform/commands";
-import { businessPartyAddressSchema, businessPartyCategorySchema, businessPartyContactSchema, businessPartySchema, configurationApprovalSchema, currencySchema, exchangeRateSchema, taxConfigurationSchema } from "./schemas";
+import { businessPartyAddressSchema, businessPartyCategorySchema, businessPartyContactSchema, businessPartySchema, catalogItemBarcodeSchema, catalogItemSchema, configurationApprovalSchema, currencySchema, exchangeRateSchema, itemCategorySchema, taxConfigurationSchema, unitConversionSchema, unitOfMeasureSchema } from "./schemas";
 
 export const initialMasterDataActionState: PlatformActionState = { status: "idle" };
 
@@ -87,3 +87,19 @@ export async function addBusinessPartyAddress(_previousState: PlatformActionStat
   const { error } = await supabase.rpc("add_business_party_address", { input: parsed.data });
   return error ? { status: "error", message: "Party address could not be added." } : { status: "success", message: "Party address added and audited." };
 }
+
+type FormSchema = { safeParse: (data: unknown) => { success: true; data: object } | { success: false } };
+
+async function runCatalogCommand(formData: FormData, schema: FormSchema, rpc: string, failureMessage: string, successMessage: string): Promise<PlatformActionState> {
+  const parsed = schema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "error", message: failureMessage };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc(rpc, { input: parsed.data });
+  return error ? { status: "error", message: failureMessage } : { status: "success", message: successMessage };
+}
+
+export async function createItemCategory(_previousState: PlatformActionState, formData: FormData) { void _previousState; return runCatalogCommand(formData, itemCategorySchema, "create_item_category", "Item category could not be created.", "Item category created and audited."); }
+export async function createUnitOfMeasure(_previousState: PlatformActionState, formData: FormData) { void _previousState; return runCatalogCommand(formData, unitOfMeasureSchema, "create_unit_of_measure", "Unit of measure could not be created.", "Unit of measure created and audited."); }
+export async function createUnitConversion(_previousState: PlatformActionState, formData: FormData) { void _previousState; return runCatalogCommand(formData, unitConversionSchema, "create_unit_conversion", "Unit conversion could not be created.", "Unit conversion created and audited."); }
+export async function upsertCatalogItem(_previousState: PlatformActionState, formData: FormData) { void _previousState; return runCatalogCommand(formData, catalogItemSchema, "upsert_catalog_item", "Catalogue item could not be saved.", "Catalogue item saved and audited."); }
+export async function addCatalogItemBarcode(_previousState: PlatformActionState, formData: FormData) { void _previousState; return runCatalogCommand(formData, catalogItemBarcodeSchema, "add_catalog_item_barcode", "Item barcode could not be added.", "Item barcode added and audited."); }

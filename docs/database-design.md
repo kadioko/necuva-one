@@ -32,7 +32,7 @@ erDiagram
 
 ## Platform provisioning tables
 
-The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, implementation projects, shared currencies, organisation exchange-rate versions, tax-configuration versions, business-party categories, business parties, party contacts, and party addresses.
+The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, implementation projects, shared currencies, organisation exchange-rate versions, tax-configuration versions, business-party categories, business parties, party contacts, party addresses, item categories, units of measure, unit conversions, catalogue items, and item barcodes.
 
 `platform_role_assignments` is separate from tenant membership because platform staff must not receive tenant membership merely to administer the platform. `provision_organisation(jsonb)` is a security-definer function that checks a platform permission internally and atomically creates the tenant root, first company, first branch, owner membership/scope/role, implementation record, and audit event.
 
@@ -45,3 +45,7 @@ Audited, permission-checked commands now cover tenant lifecycle, subscription pl
 `currencies` is platform-managed reference data. `organisation_exchange_rate_versions` and `tax_configuration_versions` are tenant-owned, RLS-protected append-only configuration versions. Both carry effective dates, source references, draft/approved/retired state, actor references, and audit events. Approval retires an approved record for the same effective key before it promotes the selected draft, preserving historical versions without hard-coding statutory rates.
 
 `business_parties` stores a tenant's customer, supplier, or shared party identity. Categories, contacts, and addresses each duplicate `organisation_id` and use composite foreign keys to the party, preventing cross-tenant child records at the database boundary. Primary contact and primary address selections are constrained with partial unique indexes.
+
+## Phase 2 Item Catalogue
+
+`catalog_items` separates product and service identity from future inventory balances. Each item has a tenant-scoped code, category, and base unit; products may opt into future inventory tracking, while services cannot. Categories, units, conversions, and barcodes all carry `organisation_id`; composite foreign keys prevent cross-tenant links, compatible unit dimensions are checked in the command, and a partial unique index ensures at most one primary barcode per item.

@@ -78,3 +78,12 @@ export const businessPartyAddressSchema = z.object({
   countryCode: z.string().trim().toUpperCase().regex(/^[A-Z]{2}$/),
   isPrimary: z.enum(["true", "false"]),
 });
+
+const itemCodeSchema = z.string().trim().toUpperCase().regex(/^[A-Z0-9_.-]{2,50}$/);
+const positiveDecimalSchema = decimalSchema.refine((value) => Number(value) > 0);
+
+export const itemCategorySchema = z.object({ organisationId: uuidSchema, parentCategoryId: z.preprocess((value) => value === "" ? undefined : value, uuidSchema.optional()), code: itemCodeSchema, name: z.string().trim().min(1).max(150) });
+export const unitOfMeasureSchema = z.object({ organisationId: uuidSchema, code: z.string().trim().toUpperCase().regex(/^[A-Z0-9_.-]{1,20}$/), name: z.string().trim().min(1).max(100), dimension: z.enum(["count", "weight", "volume", "length", "area", "time", "other"]), decimalPlaces: z.coerce.number().int().min(0).max(6) });
+export const unitConversionSchema = z.object({ organisationId: uuidSchema, fromUnitId: uuidSchema, toUnitId: uuidSchema, factor: positiveDecimalSchema }).refine((value) => value.fromUnitId !== value.toUnitId, { path: ["toUnitId"], message: "Units must differ." });
+export const catalogItemSchema = z.object({ id: z.preprocess((value) => value === "" ? undefined : value, uuidSchema.optional()), organisationId: uuidSchema, categoryId: z.preprocess((value) => value === "" ? undefined : value, uuidSchema.optional()), baseUnitId: uuidSchema, itemType: z.enum(["product", "service"]), code: itemCodeSchema, name: z.string().trim().min(1).max(200), description: z.preprocess((value) => value === "" ? undefined : value, z.string().trim().max(2000).optional()), tracksInventory: z.enum(["true", "false"]), isActive: z.enum(["true", "false"]) }).refine((value) => value.itemType === "product" || value.tracksInventory === "false", { path: ["tracksInventory"], message: "Services cannot track inventory." });
+export const catalogItemBarcodeSchema = z.object({ organisationId: uuidSchema, itemId: uuidSchema, barcode: z.string().trim().min(3).max(100), symbology: z.enum(["ean_13", "ean_8", "upc_a", "code_128", "qr_code", "other"]), isPrimary: z.enum(["true", "false"]) });
