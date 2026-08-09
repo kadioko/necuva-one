@@ -35,3 +35,23 @@ export const fiscalYearSchema = z.object({
   name: z.string().trim().min(2).max(100),
   startDate: z.iso.date().refine((value) => value.endsWith("-01"), "Fiscal years must begin on the first day of a month."),
 });
+
+const journalAmountSchema = z.string().trim().max(40).refine(
+  (value) => value === "" || /^\d+(?:\.\d{1,4})?$/.test(value),
+  "Enter a non-negative amount with no more than four decimal places.",
+);
+
+export const draftJournalSchema = z.object({
+  organisationId: uuidSchema,
+  companyId: uuidSchema,
+  branchId: uuidSchema,
+  journalDate: z.iso.date(),
+  description: z.string().trim().min(1).max(500),
+  sourceReference: z.string().trim().min(1).max(150),
+  lines: z.array(z.object({
+    accountId: uuidSchema,
+    description: z.string().trim().max(250),
+    debit: journalAmountSchema,
+    credit: journalAmountSchema,
+  })).min(2).max(200),
+});

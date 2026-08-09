@@ -32,7 +32,7 @@ erDiagram
 
 ## Platform provisioning tables
 
-The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, implementation projects, shared currencies, organisation exchange-rate versions, tax-configuration versions, business-party categories, business parties, party contacts, party addresses, item categories, units of measure, unit conversions, catalogue items, item barcodes, payment methods, bank accounts, mobile-money accounts, master-data import batches, staged import rows, account groups, chart accounts, fiscal years, and fiscal periods.
+The baseline includes organisations, companies, branches, departments, warehouses, profiles, memberships, roles, permissions, role permissions, member roles, member scopes, platform role assignments, support access grants, audit events, modules, plans, plan limits, plan modules, subscriptions, implementation projects, shared currencies, organisation exchange-rate versions, tax-configuration versions, business-party categories, business parties, party contacts, party addresses, item categories, units of measure, unit conversions, catalogue items, item barcodes, payment methods, bank accounts, mobile-money accounts, master-data import batches, staged import rows, account groups, chart accounts, fiscal years, fiscal periods, accounting-journal sequences, journal headers, and journal lines.
 
 `platform_role_assignments` is separate from tenant membership because platform staff must not receive tenant membership merely to administer the platform. `provision_organisation(jsonb)` is a security-definer function that checks a platform permission internally and atomically creates the tenant root, first company, first branch, owner membership/scope/role, implementation record, and audit event.
 
@@ -61,3 +61,7 @@ Audited, permission-checked commands now cover tenant lifecycle, subscription pl
 ## Phase 3 Accounting Configuration
 
 `account_groups` and `chart_accounts` are legal-company records protected by company-scope RLS and composite tenant foreign keys. Group/account type consistency is enforced by a composite foreign key, and chart-account normal balance is a generated value rather than editable state. `fiscal_years` and `fiscal_periods` use date-guard triggers to prevent overlap; the creation command atomically creates a draft year and twelve future monthly periods.
+
+## Phase 3 Journal Preparation
+
+`accounting_journals` duplicates organisation, company, and branch keys so composite foreign keys and branch-aware RLS enforce ownership at every read. `accounting_journal_lines` carries the same keys, references a same-company chart account, and constrains each row to exactly one positive debit or credit. Header totals are positive, equal integer minor units. `accounting_journal_sequences` allocates `GJ` numbers per company and fiscal year inside the journal transaction. The only current mutation is `create_draft_journal(jsonb)`; direct client writes and workflow transitions are unavailable.

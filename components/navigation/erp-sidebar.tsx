@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { Barcode, BookOpen, Building2, ClipboardList, Database, FileUp, Landmark, LayoutDashboard, Settings, ShieldCheck } from "lucide-react";
+import { Barcode, BookOpen, BookText, Building2, ClipboardList, Database, FileUp, Landmark, LayoutDashboard, Settings, ShieldCheck } from "lucide-react";
 
 const navigation = [
   { href: "/erp", label: "Overview", icon: LayoutDashboard },
   { href: "/erp/accounting/setup", label: "Accounting setup", icon: BookOpen },
+  { href: "/erp/accounting/journals", label: "Journal preparation", icon: BookText },
   { href: "/onboarding", label: "Onboarding", icon: Building2 },
   { href: "/erp/audit", label: "Audit trail", icon: ClipboardList },
   { href: "/erp/master-data/parties", label: "Parties", icon: Database },

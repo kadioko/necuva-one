@@ -10,6 +10,7 @@
 - [x] Payment account identifiers require scope-aware permission checks and are masked in interfaces and audit payloads.
 - [x] Master-data CSV imports enforce file/row limits, strict templates, duplicate checks, domain permissions, and atomic confirmation.
 - [x] Accounting setup enforces company scope, derived normal balances, control-account rules, and non-overlapping fiscal calendars.
+- [x] Journal preparation enforces branch scope, exact minor units, balanced entries, same-company manual accounts, fiscal dates, atomic numbering, and audited RPC-only writes.
 - [x] Support access is explicit, expires within seven days, is revocable, and is audited.
 - [ ] Error messages do not reveal sensitive business data.
 - [ ] Production readiness review completed before customer go-live.

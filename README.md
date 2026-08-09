@@ -1,6 +1,6 @@
 # Necuva One
 
-Necuva One is a security-first, multi-tenant ERP platform for Necuva Group Limited. The repository contains Phase 0, a completed Phase 1 Platform Core, completed Phase 2 master-data foundations, and the opening Phase 3 accounting-configuration slice: account groups, company charts of accounts, and draft fiscal calendars.
+Necuva One is a security-first, multi-tenant ERP platform for Necuva Group Limited. The repository contains Phase 0, a completed Phase 1 Platform Core, completed Phase 2 master-data foundations, and Phase 3 accounting configuration plus balanced manual journal preparation.
 
 ## Requirements
 
@@ -41,6 +41,6 @@ For Vercel, import `kadioko/necuva-one`, configure the public Supabase values fo
 
 ## Current scope
 
-No accounting posting, stock movement, sales, purchasing, payroll, manufacturing, reconciliation, or other transactional engine is implemented. Phase 3 accounting is in progress; configuration exists, while journals, ledgers, balances, period controls, and reports remain deferred.
+Manual journal drafts now have branch-aware permissions, fiscal-year numbering, base-currency minor-unit amounts, source references, and atomic balance validation. They do not affect accounting balances. Submission, approval, posting, reversal, opening balances, ledgers, period controls, reports, stock movement, sales, purchasing, payroll, manufacturing, and reconciliation remain deferred.
 
 Start with the [documentation index](docs/README.md), then review the [Phase 1 status](docs/phase-1-platform-core.md), [Phase 2 status](docs/phase-2-master-data.md), [Phase 3 status](docs/phase-3-accounting.md), [local development guide](docs/local-development.md), [module roadmap](docs/module-roadmap.md), and [security checklist](docs/security-checklist.md).

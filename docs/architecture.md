@@ -22,3 +22,5 @@ Public clients use only Supabase publishable credentials. Server-side code may u
 Implemented mutations use server actions for Zod validation and Supabase RPC for database-side authorisation and atomic writes. Platform commands use platform permissions; tenant commands use organisation permissions and scopes. The service role is used only for the one-time, allow-listed platform-owner bootstrap.
 
 Controlled CSV imports are parsed and size-limited in the server runtime, then staged as tenant-owned database rows. PostgreSQL independently validates references and permissions; only a valid staged batch can invoke existing domain commands inside an atomic confirmation transaction.
+
+Accounting journal preparation follows the same split. The server action converts validated base-currency decimal strings to integer minor units using database currency precision. PostgreSQL independently resolves branch permission, company currency and fiscal period, checks accounts and balance, allocates the journal number, and writes the draft plus audit event in one transaction.

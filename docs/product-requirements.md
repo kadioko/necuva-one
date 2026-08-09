@@ -4,7 +4,7 @@ Necuva One is a multi-tenant ERP for Tanzanian SMEs and growing organisations. T
 
 Phase 0 establishes architecture, local development, tenant security, testing and the application foundation. It deliberately excludes accounting, inventory, sales, purchasing, payroll, and manufacturing business workflows.
 
-Phases 1 and 2 establish the platform core and master data. Phase 3 accounting is now in progress, beginning with company chart and fiscal-calendar configuration; transactional finance and operations remain gated by the roadmap.
+Phases 1 and 2 establish the platform core and master data. Phase 3 accounting is now in progress with company chart and fiscal-calendar configuration plus balanced manual journal drafts; posting, ledger balances, and operational transactions remain gated by the roadmap.
 
 ## Quality bar
 

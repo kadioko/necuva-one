@@ -15,7 +15,7 @@
 - [Client onboarding](client-onboarding.md): implementation lifecycle.
 - [Phase 1 platform-core status](phase-1-platform-core.md): completed work and remaining work.
 - [Phase 2 master-data status](phase-2-master-data.md): delivery order, implemented reference data, and deferred transaction logic.
-- [Phase 3 accounting status](phase-3-accounting.md): accounting delivery order, configuration invariants, and deferred posting logic.
+- [Phase 3 accounting status](phase-3-accounting.md): configuration, draft-journal invariants, delivery order, and deferred posting logic.
 
 ## Operations and quality
 

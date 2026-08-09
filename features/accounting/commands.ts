@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import type { PlatformActionState } from "@/features/platform/commands";
 import { createClient } from "@/lib/supabase/server";
 
+import { prepareDraftJournalCommand } from "./journal-draft";
 import { accountGroupSchema, chartAccountSchema, fiscalYearSchema } from "./schemas";
 
 export const initialAccountingActionState: PlatformActionState = { status: "idle" };
@@ -32,4 +33,56 @@ export async function upsertChartAccount(_previousState: PlatformActionState, fo
 export async function createFiscalYear(_previousState: PlatformActionState, formData: FormData) {
   void _previousState;
   return runAccountingCommand(formData, fiscalYearSchema, "create_fiscal_year", "Fiscal year could not be created. Check the dates for overlap.", "Draft fiscal year and 12 future periods created.");
+}
+
+export async function createDraftJournal(_previousState: PlatformActionState, formData: FormData): Promise<PlatformActionState> {
+  void _previousState;
+
+  let lines: unknown;
+  try {
+    lines = JSON.parse(String(formData.get("lines") ?? ""));
+  } catch {
+    return { status: "error", message: "Journal lines are invalid." };
+  }
+
+  const rawInput = { ...Object.fromEntries(formData), lines };
+  const companyId = String(formData.get("companyId") ?? "");
+  const supabase = await createClient();
+  const { data: company } = await supabase
+    .from("companies")
+    .select("currency_code")
+    .eq("id", companyId)
+    .maybeSingle();
+
+  if (!company) return { status: "error", message: "The selected legal company is unavailable." };
+
+  const { data: currency } = await supabase
+    .from("currencies")
+    .select("decimal_places")
+    .eq("code", company.currency_code)
+    .eq("is_active", true)
+    .maybeSingle();
+
+  if (!currency) return { status: "error", message: "The company currency is unavailable." };
+
+  let input;
+  try {
+    input = prepareDraftJournalCommand(rawInput, currency.decimal_places);
+  } catch (error) {
+    return { status: "error", message: error instanceof Error ? error.message : "Draft journal input is invalid." };
+  }
+
+  const { data: journalId, error } = await supabase.rpc("create_draft_journal", { input });
+  if (error || !journalId) {
+    return { status: "error", message: "Draft journal could not be created. Check the branch, date, accounts, and balance." };
+  }
+
+  const { data: journal } = await supabase
+    .from("accounting_journals")
+    .select("journal_number")
+    .eq("id", journalId)
+    .maybeSingle();
+
+  revalidatePath("/erp/accounting/journals");
+  return { status: "success", message: journal?.journal_number ? `Draft ${journal.journal_number} created and audited.` : "Draft journal created and audited." };
 }
